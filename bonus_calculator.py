@@ -1,4 +1,3 @@
-
 import streamlit as st
 import streamlit_authenticator as stauth
 import bcrypt
@@ -8,13 +7,8 @@ credentials = {
     "usernames": {
         "alan_bailey": {
             "name": "Alan Bailey",
-            "password": "$2b$12$jN5ADtD.xt0kVb3/cXWzo.FHjyfUiAaBOgl.5gF5tUyhX8k./OvNy",  # Hashed password
+            "password": "$2b$12$9xsZSDscpcuHPDgeozFi7eRMtd8yzMMBEPmVFGBRbl9iwPLG5dYtq",  # Updated hashed password
             "email": "bailey.alan@gmail.com"
-        },
-        "jane_smith": {
-            "name": "Jane Smith",
-            "password": "$2b$12$Hlh7vlD8FZezhAaR.R/I/.3qy8OxFe69XwYuMoYKd946IqI3Fuycq",  # Hashed password
-            "email": "janesmith@example.com"
         }
     }
 }
@@ -23,8 +17,12 @@ credentials = {
 authenticator = stauth.Authenticate(credentials, "app_login", "abcdef", cookie_expiry_days=1)
 
 # Login widget
-authentication_status = authenticator.login()
-st.write(f"Auth Status: {authentication_status}")  # Debugging output
+name, authentication_status, username = authenticator.login()
+
+# Debugging outputs
+st.write(f"Auth Status: {authentication_status}")  # Check if authentication is working
+st.write(f"Entered username: {username}")  # Corrected way to display username
+st.write(f"Stored password hash: {credentials['usernames'].get(username, {}).get('password', 'Not found')}")  # Check stored password hash
 
 if authentication_status:
     st.success("Login successful!")
