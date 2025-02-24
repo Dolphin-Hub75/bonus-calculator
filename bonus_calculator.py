@@ -1,5 +1,3 @@
-# Updated on 24/02/2025 to fix authentication issues
-
 import streamlit as st
 import streamlit_authenticator as stauth
 import bcrypt
@@ -19,7 +17,14 @@ credentials = {
 authenticator = stauth.Authenticate(credentials, "app_login", "abcdef", cookie_expiry_days=1)
 
 # Login widget
-name, authentication_status, username = authenticator.login()
+login_response = authenticator.login()
+st.write(f"Raw login response: {login_response}")  # Debugging output
+
+if login_response is not None:
+    name, authentication_status, username = login_response
+else:
+    authentication_status = None
+    username = None
 
 # Debugging outputs
 st.write(f"Auth Status: {authentication_status}")  # Check if authentication is working
