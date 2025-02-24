@@ -1,11 +1,21 @@
+
 import streamlit as st
 import streamlit_authenticator as stauth
+import bcrypt
 
-# Create user credentials
+# Create user credentials with hashed passwords
 credentials = {
     "usernames": {
-        "john_doe": {"name": "John Doe", "password": "password123"},
-        "jane_smith": {"name": "Jane Smith", "password": "securepass"}
+        "alan_bailey": {
+            "name": "Alan Bailey",
+            "password": "$2b$12$jN5ADtD.xt0kVb3/cXWzo.FHjyfUiAaBOgl.5gF5tUyhX8k./OvNy",  # Hashed password
+            "email": "bailey.alan@gmail.com"
+        },
+        "jane_smith": {
+            "name": "Jane Smith",
+            "password": "$2b$12$Hlh7vlD8FZezhAaR.R/I/.3qy8OxFe69XwYuMoYKd946IqI3Fuycq",  # Hashed password
+            "email": "janesmith@example.com"
+        }
     }
 }
 
@@ -13,12 +23,14 @@ credentials = {
 authenticator = stauth.Authenticate(credentials, "app_login", "abcdef", cookie_expiry_days=1)
 
 # Login widget
-name, authentication_status, username = authenticator.login("Login", "main")
+authentication_status = authenticator.login()
+st.write(f"Auth Status: {authentication_status}")  # Debugging output
 
 if authentication_status:
-    st.success(f"Welcome, {name}!")
+    st.success("Login successful!")
     authenticator.logout("Logout", "sidebar")
 
+    # Bonus Calculator Logic
     def calculate_bonus(completed_jobs, days_worked):
         job_thresholds = {
             5: (34, 34),
@@ -57,4 +69,4 @@ if authentication_status:
         st.write(result)
 
 else:
-    st.warning("Please enter valid credentials to access the app.")
+    st.warning("Please enter your credentials to continue.")
